@@ -5,6 +5,7 @@ import express from 'express'
 const app = express()
 import morgan from 'morgan'
 import mongoose from 'mongoose'
+import authRouter from './routes/authRouter.js'
 //routers
 import jobRouter from './routes/jobRouter.js'
 // middleware
@@ -19,6 +20,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
   res.send('Hello World')
 })
+
+app.use('/api/v1/auth', authRouter)
 
 app.use('/api/v1/jobs', jobRouter)
 
