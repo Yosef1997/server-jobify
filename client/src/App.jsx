@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import {
   HomeLayout,
   Landing,
@@ -11,11 +11,13 @@ import {
   AllJobs,
   Profile,
   Admin,
-} from "./pages"
+} from './pages'
+
+import { action as registerAction } from './pages/Register.jsx'
 
 export const checkDefaultTheme = () => {
-  const isDarkTheme = localStorage.getItem("darkTheme") === "true"
-  document.body.classList.toggle("dark-theme", isDarkTheme)
+  const isDarkTheme = localStorage.getItem('darkTheme') === 'true'
+  document.body.classList.toggle('dark-theme', isDarkTheme)
   return isDarkTheme
 }
 
@@ -23,7 +25,7 @@ checkDefaultTheme()
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <HomeLayout />,
     errorElement: <Error />,
     children: [
@@ -32,15 +34,16 @@ const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: "register",
+        path: 'register',
         element: <Register />,
+        action: registerAction,
       },
       {
-        path: "login",
+        path: 'login',
         element: <Login />,
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         element: <DashboardLayout />,
         children: [
           {
@@ -48,19 +51,19 @@ const router = createBrowserRouter([
             element: <AddJob />,
           },
           {
-            path: "stats",
+            path: 'stats',
             element: <Stats />,
           },
           {
-            path: "all-jobs",
+            path: 'all-jobs',
             element: <AllJobs />,
           },
           {
-            path: "profile",
+            path: 'profile',
             element: <Profile />,
           },
           {
-            path: "admin",
+            path: 'admin',
             element: <Admin />,
           },
         ],
