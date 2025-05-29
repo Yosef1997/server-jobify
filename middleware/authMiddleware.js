@@ -7,11 +7,12 @@ import { verifyJWT } from '../utils/tokenUtils.js'
 
 export const authenticateUser = (req, res, next) => {
   const { token } = req.cookies
+
   if (!token) throw new UnauthenticatedError('authentication invalid')
 
   try {
     const { userId, role } = verifyJWT(token)
-    const testUser = userId === '6836c7bc83f8c5a181481ec1'
+    const testUser = userId === '6838772b38c229a8855be1cb'
     req.user = { userId, role, testUser }
     next()
   } catch (error) {
