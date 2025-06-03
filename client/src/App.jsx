@@ -34,7 +34,15 @@ export const checkDefaultTheme = () => {
   return isDarkTheme
 }
 
-checkDefaultTheme()
+const isDarkThemeEnabled = checkDefaultTheme()
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+})
 
 const router = createBrowserRouter([
   {
@@ -54,12 +62,17 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
-        action: loginAction,
+        action: loginAction(queryClient),
       },
       {
         path: 'dashboard',
-        element: <DashboardLayout />,
-        loader: dashboardLoader,
+        element: (
+          <DashboardLayout
+            isDarkThemeEnabled={isDarkThemeEnabled}
+            queryClient={queryClient}
+          />
+        ),
+        loader: dashboardLoader(queryClient),
         children: [
           {
             index: true,
@@ -69,7 +82,7 @@ const router = createBrowserRouter([
           {
             path: 'stats',
             element: <Stats />,
-            loader: statsLoader,
+            loader: statsLoader(queryClient),
             errorElement: <ErrorElement />,
           },
           {
@@ -80,7 +93,7 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
-            action: profileAction,
+            action: profileAction(queryClient),
           },
           {
             path: 'admin',
@@ -99,14 +112,6 @@ const router = createBrowserRouter([
     ],
   },
 ])
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-    },
-  },
-})
 
 const App = () => {
   return (

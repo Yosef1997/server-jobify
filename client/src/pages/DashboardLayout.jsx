@@ -11,20 +11,28 @@ import { BigSidebar, Navbar, SmallSidebar, Loading } from '../components'
 import { checkDefaultTheme } from '../App'
 import customFetch from '../utils/customFetch'
 import { toast } from 'react-toastify'
+import { useQuery } from '@tanstack/react-query'
 
 const DashboardContext = createContext()
 
-export const loader = async () => {
-  try {
-    const { data } = await customFetch.get('/users/current-user')
+const userQuery = {
+  queryKey: ['user'],
+  queryFn: async () => {
+    const { data } = await customFetch('/users/current-user')
     return data
+  },
+}
+
+export const loader = (queryClient) => async () => {
+  try {
+    return await queryClient.ensureQueryData(userQuery)
   } catch (error) {
     return redirect('/')
   }
 }
 
-const DashboardLayout = () => {
-  const { user } = useLoaderData()
+const DashboardLayout = ({ prefersDarkMode, queryClient }) => {
+  const { user } = useQuery(userQuery)?.data
   const navigate = useNavigate()
   const [showSidebar, setShowSidebar] = useState(false)
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme())
@@ -44,6 +52,7 @@ const DashboardLayout = () => {
   const logoutUser = async () => {
     navigate('/')
     await customFetch.get('/auth/logout')
+    queryClient.invalidateQueries()
     toast.success('loging out ...')
   }
 
