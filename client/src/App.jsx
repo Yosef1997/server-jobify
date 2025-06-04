@@ -14,7 +14,6 @@ import {
   EditJob,
 } from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { action as registerAction } from './pages/Register.jsx'
 import { action as loginAction } from './pages/Login.jsx'
 import { action as addJobAction } from './pages/AddJob.jsx'
@@ -117,7 +116,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }
